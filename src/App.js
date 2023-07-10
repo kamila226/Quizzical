@@ -60,7 +60,6 @@ function App() {
 
   function countCorrect() {
     questions.forEach((quest) => {
-      console.log(quest.answers.find((ans) => ans.selected && ans.correct));
       if (quest.answers.find((ans) => ans.selected && ans.correct)) {
         setCount((prevCount) => prevCount + 1);
       }
