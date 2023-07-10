@@ -4,17 +4,17 @@ import Answer from "./Answer";
 
 export default function Question(props) {
   let style;
-  let incorrect = {
+  const incorrect = {
     backgroundColor: "#F8BCBC",
     opacity: 0.6,
     border: "1px solid #F8BCBC",
   };
-  let correct = {
+  const correct = {
     backgroundColor: "#94D7A2",
     border: "1px solid #94D7A2",
     color: "#293264",
   };
-  let neutral = { opacity: 0.6 };
+  const neutral = { opacity: 0.6 };
   const selected = { backgroundColor: "#d6dbf5" };
 
   const answersElements = props.answers.map((ans) => {
@@ -22,7 +22,7 @@ export default function Question(props) {
       if (ans.correct) {
         style = correct;
       } else {
-        style = !ans.corect && ans.selected ? incorrect : neutral;
+        style = ans.selected ? incorrect : neutral;
       }
     } else {
       style = ans.selected ? selected : {};

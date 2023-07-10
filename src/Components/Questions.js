@@ -4,7 +4,8 @@ import Question from "./Question.js";
 import he from "he";
 
 export default function Questions(props) {
-  const { questions, setQuestions, checkMode, quizStart } = props;
+  const { questions, setQuestions, checkMode, fetchTrigger, selectAnswer } =
+    props;
   useEffect(() => {
     fetch("https://opentdb.com/api.php?amount=5&difficulty=easy&type=multiple")
       .then((res) => res.json())
@@ -16,20 +17,18 @@ export default function Questions(props) {
           ]);
           const answersObjects = answers.map((ans) => ({
             id: nanoid(),
-            answer: ans,
-            selected: false,
-            correct: false,
+            answer: he.decode(ans),
           }));
           return {
             question: he.decode(obj.question),
-            correctAnswer: obj.correct_answer,
+            correctAnswer: he.decode(obj.correct_answer),
             answers: answersObjects,
             id: nanoid(),
           };
         });
         setQuestions(fetchedQuestions);
       });
-  }, [quizStart]);
+  }, [fetchTrigger]);
 
   function shuffleArray(array) {
     let currentIndex = array.length;
@@ -49,21 +48,6 @@ export default function Questions(props) {
     }
 
     return array;
-  }
-
-  function selectAnswer(questionId, answerId) {
-    setQuestions((prevQuestions) => {
-      const questions = [...prevQuestions];
-      const questionIndex = questions.findIndex(
-        (quest) => quest.id === questionId
-      );
-      const answerIndex = questions[questionIndex].answers.findIndex(
-        (ans) => ans.id === answerId
-      );
-      questions[questionIndex].answers.forEach((ans) => (ans.selected = false));
-      questions[questionIndex].answers[answerIndex].selected = true;
-      return questions;
-    });
   }
 
   const questionElements = questions.map((question) => (
