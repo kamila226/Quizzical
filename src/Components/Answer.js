@@ -12,7 +12,10 @@ export default function Answer(props) {
     color: "#293264",
   };
   const neutral = { opacity: 0.6 };
-  const selected = { backgroundColor: "#d6dbf5" };
+  const selected = {
+    backgroundColor: "#d6dbf5",
+    border: "1px solid #d6dbf5",
+  };
 
   if (checkMode) {
     if (answer.correct) {
