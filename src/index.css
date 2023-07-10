@@ -6,7 +6,7 @@ body {
   margin: 0;
   background-color: #f5f7fb;
   font-family: "Karla", sans-serif;
-  padding-top: 150px;
+  padding-top: 100px;
   color: #293264;
 }
 
@@ -16,6 +16,7 @@ body {
 }
 
 .start--window {
+  padding-top: 25vh;
   text-align: center;
 }
 
