@@ -1,10 +1,14 @@
 import { useState, useEffect } from "react";
 import Questions from "./Components/Questions";
+import Result from "./Components/Result";
+import Confetti from "react-confetti";
 
 function App() {
   const [welcomeWindow, setWelcomeWindow] = useState(true);
   const [fetchTrigger, setFetchTrigger] = useState(false);
   const [checkMode, setCheckMode] = useState(false);
+  const [count, setCount] = useState(0);
+  const [allCorrect, setAllCorrect] = useState(false);
   const [questions, setQuestions] = useState([
     {
       question: "",
@@ -21,10 +25,18 @@ function App() {
     },
   ]);
 
+  useEffect(() => {
+    if (count === questions.length) {
+      setAllCorrect(true);
+    }
+  }, [count]);
+
   function startQuiz() {
     setWelcomeWindow(false);
     setFetchTrigger((prevState) => !prevState);
     setCheckMode(false);
+    setCount(0);
+    setAllCorrect(false);
   }
 
   function selectAnswer(questionId, answerId) {
@@ -43,10 +55,21 @@ function App() {
 
   function checkAnswers() {
     setCheckMode(true);
+    countCorrect();
+  }
+
+  function countCorrect() {
+    questions.forEach((quest) => {
+      console.log(quest.answers.find((ans) => ans.selected && ans.correct));
+      if (quest.answers.find((ans) => ans.selected && ans.correct)) {
+        setCount((prevCount) => prevCount + 1);
+      }
+    });
   }
 
   return (
     <main className="app">
+      {allCorrect && <Confetti />}
       {welcomeWindow ? (
         <div className="start--window">
           <h1>Quizzical</h1>
@@ -62,6 +85,7 @@ function App() {
             fetchTrigger={fetchTrigger}
             selectAnswer={selectAnswer}
           />
+          {checkMode && <Result count={count} total={questions.length} />}
           <button onClick={checkMode ? startQuiz : checkAnswers}>
             {checkMode ? "Play again" : "Check answers"}
           </button>

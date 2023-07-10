@@ -30,6 +30,7 @@ export default function Questions(props) {
             answers: fetchedAnswers[i],
           };
         });
+        console.log(fetchedQuestions);
         setQuestions(fetchedQuestions);
       });
   }, [fetchTrigger]);
