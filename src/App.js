@@ -20,7 +20,6 @@ function App() {
       id: "",
     },
   ]);
-  const [answers, setAnswers] = useState();
 
   function startQuiz() {
     setWelcomeWindow(false);
@@ -31,30 +30,18 @@ function App() {
   function selectAnswer(questionId, answerId) {
     setQuestions((prevQuestions) => {
       const questions = [...prevQuestions];
-      const questionIndex = questions.findIndex(
-        (quest) => quest.id === questionId
-      );
-      const answerIndex = questions[questionIndex].answers.findIndex(
-        (ans) => ans.id === answerId
-      );
-      questions[questionIndex].answers.forEach((ans) => (ans.selected = false));
-      questions[questionIndex].answers[answerIndex].selected = true;
+      const questInd = questions.findIndex((quest) => quest.id === questionId);
+      const questAnswers = questions[questInd].answers.map((ans) => ({
+        ...ans,
+        selected: ans.id === answerId,
+      }));
+
+      questions[questInd].answers = questAnswers;
       return questions;
     });
   }
 
   function checkAnswers() {
-    setQuestions((prevQuestions) => {
-      const questions = prevQuestions.map((question) => {
-        const newAnswers = question.answers.map((ans) =>
-          ans.answer === question.correctAnswer
-            ? { ...ans, correct: true }
-            : ans
-        );
-        return { ...question, answers: newAnswers };
-      });
-      return questions;
-    });
     setCheckMode(true);
   }
 
